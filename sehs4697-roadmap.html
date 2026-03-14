@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEHS4697 Mid-Term 3-Day Roadmap</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        .roadmap-node { transition: all 0.3s ease; }
+        .roadmap-node:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        .progress-bar { background: linear-gradient(to right, #4ade80 var(--progress), #e5e7eb 0); }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-8">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                SEHS4697 Big Data Mid-Term Roadmap
+            </h1>
+            <p class="text-xl text-gray-700 mb-2">Master Lectures/Tutorials 1-6 in 3 Days • Test: Mar 21 • R Programming Focus</p>
+            <div class="flex justify-center items-center space-x-4 text-sm text-gray-500">
+                <span>📚 Coverage: L1-6, T1-6 [file:1]</span>
+                <span>⏱️ 18-24 Hours Total</span>
+                <span>💻 Hands-on R Priority</span>
+            </div>
+        </header>
+
+        <!-- Progress Tracker -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-800">Progress Tracker</h2>
+            <div class="grid grid-cols-4 gap-4 mb-4">
+                <div class="progress-card">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Day 1: Foundations</label>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="progress-bar rounded-full h-3" style="--progress: 0%;"></div>
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Day 2: Regression</label>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="progress-bar rounded-full h-3" style="--progress: 0%;"></div>
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Day 3: Classification</label>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="progress-bar rounded-full h-3" style="--progress: 0%;"></div>
+                    </div>
+                </div>
+                <div class="progress-card">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Overall</label>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="progress-bar rounded-full h-3" style="--progress: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-xl font-medium transition-all">
+                Mark Complete Task
+            </button>
+        </div>
+
+        <!-- Main Roadmap Mermaid -->
+        <div class="bg-white rounded-3xl shadow-2xl p-8 mb-12 roadmap-node">
+            <h2 class="text-3xl font-bold mb-8 text-center text-gray-800">Interactive 3-Day Learning Path</h2>
+            <div class="mermaid">
+                graph TD
+                    A[🛫 Day 0: Setup<br/>• Install R/RStudio/caret<br/>• List files: ls() all CSVs<br/>• Review test ann [file:1]<br/>⏱️ 1h] --> B[📖 Day 1: Foundations 5h<br/>L1: Big Data 4Vs/CRISP-DM [file:21]<br/>• Vol/Vel/Vari/Veracity<br/>• Business cases Walmart/Netflix<br/>L2: Data Prep (assume T1-2)<br/>• Clean/missing/outliers<br/>R: read.csv/summary/dplyr/plot]
+                    
+                    B --> C[💻 Day 1 Practice 3h<br/>• graduate*.csv: summary()<br/>• Checklists:<br/>  - [ ] Load 3 files<br/>  - [ ] Basic stats/plots<br/>  - [ ] CRISP-DM notes<br/>Files: [file:18][file:19]]
+                    
+                    C --> D[🔢 Day 2: Regression 6h<br/>L3: HDFS/MapReduce [file:24]<br/>• Blocks/replication<br/>• Map/Shuffle/Reduce<br/>L4: Linear/Tree/RF/NN [file:22]<br/>• lm(GPA ~ .)<br/>• Categorical one-hot<br/>• RMSE/MSE/p-values<br/>L5: CV/Model Select [file:14][file:16]<br/>• trainControl cv=10<br/>• tuneGrid cp]
+                    
+                    D --> E[⚙️ Day 2 Practice 4h<br/>• KoreaRealEstate.csv<br/>• Build lm/rpart/randomForest<br/>• Train/val/test split<br/>• varImp() plot<br/>• Predict applicants top10<br/>Checklists:<br/>  - [ ] RMSE &lt;0.5<br/>  - [ ] 3 models compared<br/>Files: [file:17][file:15]]
+                    
+                    E --> F[🎯 Day 3: Classification 6h<br/>L6: Binary/Multi [file:13]<br/>• Insurance/Bank/Skin [file:11]<br/>• Upsample imbalance<br/>• ConfusionMatrix/sens/spec<br/>• Decile gain/lift<br/>• Logistic glm family=binomial<br/>• RF multiclass]
+                    
+                    F --> G[🧪 Day 3 Practice 5h + Review<br/>• CarInsurance.csv etc [file:6][file:9][file:7]<br/>• caret::train(method=rpart/rf/glm)<br/>• predict(type=prob)<br/>• Mock test Qs:<br/>  - Interpret code<br/>  - Write snippet upsample<br/>  - Confusion stats<br/>Checklists:<br/>  - [ ] Acc&gt;75%<br/>  - [ ] All scripts run]
+                    
+                    G --> H[✅ Test Ready Mar 21<br/>• R calc OK<br/>• Close-book recall<br/>• 3 Qs: Theory+Code<br/>🎉 Predict GPA/Churn/Claims]
+                    
+                    style A fill:#e8f5e8
+                    style H fill:#c8e6c9
+                    classDef practice fill:#fff3e0,stroke:#fb923c,stroke-width:3px
+                    class C,E,G practice
+                    classDef theory fill:#dbeafe,stroke:#3b82f6,stroke-width:2px
+                    class B,D,F theory
+            </div>
+        </div>
+
+        <!-- Resources Panel -->
+        <div class="grid md:grid-cols-2 gap-8 mb-12">
+            <div class="bg-gradient-to-br from-green-50 to-emerald-100 p-8 rounded-3xl shadow-xl roadmap-node">
+                <h3 class="text-2xl font-bold mb-6 text-emerald-800">Key R Commands Cheat Sheet</h3>
+                <div class="space-y-4 text-lg">
+                    <div><code class="bg-emerald-200 px-3 py-1 rounded font-mono">library(caret); library(rpart)</code> - Setup</div>
+                    <div><code class="bg-emerald-200 px-3 py-1 rounded font-mono">trainControl(method="cv", number=10, sampling="up")</code> - CV/Upsample [file:13]</div>
+                    <div><code class="bg-emerald-200 px-3 py-1 rounded font-mono">train(y ~ ., data=train, trControl=ctl, method="rpart")</code> - Model</div>
+                    <div><code class="bg-emerald-200 px-3 py-1 rounded font-mono">confusionMatrix(pred, true, positive="Yes"); varImp()</code> - Eval</div>
+                    <div><code class="bg-emerald-200 px-3 py-1 rounded font-mono">predict(model, type="prob")</code> - Probs/Decile</div>
+                </div>
+            </div>
+            <div class="bg-gradient-to-br from-purple-50 to-violet-100 p-8 rounded-3xl shadow-xl roadmap-node">
+                <h3 class="text-2xl font-bold mb-6 text-violet-800">Must-Know Concepts</h3>
+                <ul class="space-y-3 text-lg">
+                    <li>• RMSE for regression; Accuracy/Sens/Spec for class [file:13][file:14]</li>
+                    <li>• Unbalanced: sampling="up" [file:11]</li>
+                    <li>• Variable Imp: varImp(model) [file:12]</li>
+                    <li>• Train/Val/Test; Gain/Lift deciles [file:13]</li>
+                    <li>• Files: 10+ CSVs/scripts ready [file:6 to file:20]</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center text-gray-500 text-sm mt-16 pt-12 border-t border-gray-200">
+            <p>Based on mid-term ann [file:1] & lectures [file:21][file:22][file:13].<br>
+            Practice all .txt scripts verbatim first. Track progress daily!</p>
+            <p class="mt-2">Inspired by <a href="https://roadmap.sh" class="text-blue-500 hover:underline">roadmap.sh</a> [page:0]</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'default' });
+        
+        // Progress simulation (interactive)
+        document.querySelector('button').addEventListener('click', () => {
+            const bars = document.querySelectorAll('.progress-bar');
+            bars.forEach((bar, i) => {
+                const prog = parseInt(bar.style.getPropertyValue('--progress') || 0) + 25;
+                bar.style.setProperty('--progress', Math.min(prog, 100) + '%');
+            });
+        });
+        
+        // Node hover effects
+        document.querySelectorAll('.roadmap-node').forEach(node => {
+            node.addEventListener('mouseenter', () => node.classList.add('scale-105'));
+            node.addEventListener('mouseleave', () => node.classList.remove('scale-105'));
+        });
+    </script>
+</body>
+</html>
