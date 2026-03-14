@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEHS4697 Concept Flashcards</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .flip-card { perspective: 1000px; cursor: pointer; height: 220px; }
+        .flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s; transform-style: preserve-3d; }
+        .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+        .flip-front, .flip-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 1rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .flip-back { transform: rotateY(180deg); overflow-y: auto; }
+        .tag { display: inline-block; padding: 2px 10px; border-radius: 9999px; font-size: 11px; font-weight: 700; }
+        .progress-ring { transition: stroke-dashoffset 0.5s; transform: rotate(-90deg); transform-origin: 50% 50%; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<!-- NAV -->
+<nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+        <span class="text-lg font-extrabold text-indigo-700">SEHS4697 Big Data</span>
+        <div class="flex gap-3">
+            <a href="index.html" id="nav-roadmap"
+               class="nav-link px-5 py-2 rounded-xl text-sm font-semibold transition-all bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-700">
+               🗺 Roadmap
+            </a>
+            <a href="flashcards.html" id="nav-flash"
+               class="nav-link px-5 py-2 rounded-xl text-sm font-semibold transition-all bg-indigo-600 text-white shadow">
+               🃏 Flashcards
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="bg-gradient-to-br from-indigo-700 via-purple-700 to-pink-600 text-white py-12 px-8 text-center">
+    <h1 class="text-4xl font-extrabold mb-3">SEHS4697 Concept Flashcards</h1>
+    <p class="text-lg opacity-90 mb-4">Click any card to reveal the answer • All Lectures 1-6</p>
+    <div class="flex justify-center gap-4 flex-wrap text-sm">
+        <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full">🃏 40 Cards Total</span>
+        <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full">📚 6 Topics</span>
+        <span class="bg-white bg-opacity-20 px-4 py-2 rounded-full">🎯 Mid-Term Focus</span>
+    </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-6 py-10">
+
+<!-- STATS BAR -->
+<div class="bg-white rounded-2xl shadow p-6 mb-8 flex flex-wrap items-center gap-6">
+    <div class="flex items-center gap-3">
+        <svg width="60" height="60" viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="24" fill="none" stroke="#e5e7eb" stroke-width="6"/>
+            <circle id="ring" cx="30" cy="30" r="24" fill="none" stroke="#6366f1" stroke-width="6"
+                stroke-dasharray="150.8" stroke-dashoffset="150.8" class="progress-ring"/>
+        </svg>
+        <div>
+            <div class="text-2xl font-bold text-indigo-700"><span id="known-count">0</span>/40</div>
+            <div class="text-sm text-gray-500">Cards Mastered</div>
+        </div>
+    </div>
+    <div class="flex gap-3 flex-wrap">
+        <button onclick="filterCards('all')" class="filter-btn active px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 text-white">All (40)</button>
+        <button onclick="filterCards('L1')" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">Big Data (7)</button>
+        <button onclick="filterCards('L2')" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">Data Prep (5)</button>
+        <button onclick="filterCards('L3')" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">Cloud/HDFS (7)</button>
+        <button onclick="filterCards('L4')" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">Regression (8)</button>
+        <button onclick="filterCards('L5')" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">Model Select (6)</button>
+        <button onclick="filterCards('L6')" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">Classification (7)</button>
+    </div>
+    <div class="ml-auto flex gap-3">
+        <button onclick="shuffleCards()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-purple-100 text-purple-700 hover:bg-purple-200">🔀 Shuffle</button>
+        <button onclick="resetAll()" class="px-4 py-2 rounded-xl text-sm font-semibold bg-red-100 text-red-600 hover:bg-red-200">🔄 Reset</button>
+    </div>
+</div>
+
+<!-- CARD GRID -->
+<div id="card-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+
+<footer class="text-center text-gray-400 text-sm py-10 mt-8 border-t">
+    SEHS4697 Big Data and Cloud Analytics — Flashcard Study Tool<br>
+</footer>
+</div>
+
+<script>
+const cards = [
+    // L1 Big Data
+    { id:1, topic:"L1", topicLabel:"Big Data", color:"blue",
+      q:"What are the 4Vs of Big Data?",
+      a:"<b>Volume</b>: amount of data<br><b>Velocity</b>: speed of generation/processing<br><b>Variety</b>: different types/sources<br><b>Veracity</b>: reliability/accuracy of data" },
+    { id:2, topic:"L1", topicLabel:"Big Data", color:"blue",
+      q:"What is the difference between Structured and Unstructured data?",
+      a:"<b>Structured</b>: predefined model (e.g., database tables, CSV)<br><b>Unstructured</b>: no predefined model (e.g., text, video, audio, images)" },
+    { id:3, topic:"L1", topicLabel:"Big Data", color:"blue",
+      q:"What are the 6 phases of CRISP-DM?",
+      a:"1. Business Understanding<br>2. Data Understanding<br>3. Data Preparation<br>4. Modeling<br>5. Evaluation<br>6. Deployment" },
+    { id:4, topic:"L1", topicLabel:"Big Data", color:"blue",
+      q:"What is semi-structured data? Give an example.",
+      a:"Data with some structure but also unstructured parts.<br>Example: <b>Email</b> — has structured metadata (to, from, date) but unstructured message body" },
+    { id:5, topic:"L1", topicLabel:"Big Data", color:"blue",
+      q:"How does Walmart use Big Data?",
+      a:"Processes <b>1 million transactions/hour</b><br>Uses big data for inventory management, demand forecasting, supply chain optimization, and personalized marketing" },
+    { id:6, topic:"L1", topicLabel:"Big Data", color:"blue",
+      q:"What data units are larger than GB in order?",
+      a:"GB → <b>TB</b> (Terabyte) → <b>PB</b> (Petabyte) → <b>EB</b> (Exabyte) → <b>ZB</b> (Zettabyte)<br>Each is 1000x the previous (SI) or 1024x (binary)" },
+    { id:7, topic:"L1", topicLabel:"Big Data", color:"blue",
+      q:"What is the CRISP-DM Deployment phase?",
+      a:"Integrating the model into a real business process so the organization can benefit from it.<br>E.g., Netflix recommends movies to ALL users using the trained model" },
+
+    // L2 Data Prep
+    { id:8, topic:"L2", topicLabel:"Data Prep", color:"teal",
+      q:"What are the main steps in Data Preparation?",
+      a:"1. Select relevant data<br>2. Clean: handle missing values, outliers, duplicates<br>3. Integrate: combine multiple sources<br>4. Transform: create new variables" },
+    { id:9, topic:"L2", topicLabel:"Data Prep", color:"teal",
+      q:"Name 3 common data quality issues.",
+      a:"1. <b>Missing values</b> (NA in R)<br>2. <b>Outliers</b> (extreme values)<br>3. <b>Duplicated rows</b><br>Also: wrong data types, inconsistent categories" },
+    { id:10, topic:"L2", topicLabel:"Data Prep", color:"teal",
+      q:"How do you convert a column to factor in R?",
+      a:'<code>data$Gender &lt;- factor(data$Gender)</code><br><br>Required before modeling with categorical variables in R (rpart, lm, caret)' },
+    { id:11, topic:"L2", topicLabel:"Data Prep", color:"teal",
+      q:"What is One-Hot Encoding?",
+      a:"Converting categorical variables into numeric 0/1 columns.<br>E.g., Gender (M/F) → GenderM (0 or 1), GenderF (0 or 1)<br>R does this <b>automatically</b> in most modeling functions" },
+    { id:12, topic:"L2", topicLabel:"Data Prep", color:"teal",
+      q:"What R functions help with Exploratory Data Analysis (EDA)?",
+      a:"<code>summary(data)</code> — statistics<br><code>str(data)</code> — structure<br><code>plot(x, y)</code> — scatter plot<br><code>hist(x)</code> — histogram<br><code>table(x)</code> — frequency" },
+
+    // L3 Cloud/HDFS
+    { id:13, topic:"L3", topicLabel:"HDFS/MapReduce", color:"orange",
+      q:"What are NameNode and DataNode in HDFS?",
+      a:"<b>NameNode</b>: stores catalog of file locations (metadata), does NOT store actual data<br><b>DataNode</b>: stores actual data blocks; data is replicated across 3 DataNodes by default" },
+    { id:14, topic:"L3", topicLabel:"HDFS/MapReduce", color:"orange",
+      q:"What are the 4 steps of MapReduce?",
+      a:"1. <b>Partitioning</b>: split data across nodes<br>2. <b>Map</b>: transform to key-value pairs<br>3. <b>Shuffling</b>: group by key<br>4. <b>Reduce</b>: aggregate same-key values" },
+    { id:15, topic:"L3", topicLabel:"HDFS/MapReduce", color:"orange",
+      q:"What is the purpose of the Combine phase in MapReduce?",
+      a:"Reduces data transferred over network during shuffling by <b>pre-aggregating</b> results on each node before sending to reducer.<br>Makes computation much more efficient." },
+    { id:16, topic:"L3", topicLabel:"HDFS/MapReduce", color:"orange",
+      q:"What is Flynn's Taxonomy? Name the 4 types.",
+      a:"Classification of parallel architectures:<br><b>SISD</b>: 1 CPU, 1 data stream<br><b>SIMD</b>: 1 program, multiple data<br><b>MISD</b>: multiple programs, 1 data<br><b>MIMD</b>: multiple programs + data" },
+    { id:17, topic:"L3", topicLabel:"HDFS/MapReduce", color:"orange",
+      q:"Why can't median be computed perfectly in parallel?",
+      a:"Median requires knowing the <b>global rank order</b> of all values.<br>Splitting data and finding local medians then combining gives only an approximation, not the true median." },
+    { id:18, topic:"L3", topicLabel:"HDFS/MapReduce", color:"orange",
+      q:"What are the limitations of MapReduce?",
+      a:"• Not efficient for small datasets<br>• Not suitable for <b>iterative algorithms</b> (neural networks, logistic regression)<br>• Batch only — not real-time<br>• Slow shuffling with many keys" },
+    { id:19, topic:"L3", topicLabel:"HDFS/MapReduce", color:"orange",
+      q:"What is the difference between Parallel and Distributed computing?",
+      a:"<b>Parallel</b>: multiple processors/cores on ONE computer<br><b>Distributed</b>: tasks spread across MULTIPLE computers connected by network (cluster)" },
+
+    // L4 Regression
+    { id:20, topic:"L4", topicLabel:"Regression", color:"green",
+      q:"What is a Dependent vs Independent variable in regression?",
+      a:"<b>Dependent (Y)</b>: what we want to predict (must be continuous for regression)<br><b>Independent (X)</b>: variables used to predict Y; can be numeric or categorical" },
+    { id:21, topic:"L4", topicLabel:"Regression", color:"green",
+      q:"Write the formula for Multiple Linear Regression.",
+      a:"Y = β₀ + β₁X₁ + β₂X₂ + ... + βₙXₙ + ε<br><br>β coefficients estimated by minimizing <b>MSE = (1/n) Σ(Y - Ŷ)²</b>" },
+    { id:22, topic:"L4", topicLabel:"Regression", color:"green",
+      q:"How do you build a linear regression model in R?",
+      a:'<code>model &lt;- lm(GPA ~ Eng + Chi + Math + Lib, data=graduates)</code><br><code>summary(model)</code><br><code>PredGPA &lt;- predict(model, newdata=applicants)</code>' },
+    { id:23, topic:"L4", topicLabel:"Regression", color:"green",
+      q:"What does a low p-value (&lt;0.05) mean for a regression coefficient?",
+      a:"There is <b>evidence that the coefficient is non-zero</b>, meaning the variable contributes to predicting Y.<br>High p-value (≥0.05) = no evidence of contribution." },
+    { id:24, topic:"L4", topicLabel:"Regression", color:"green",
+      q:"How does a Regression Tree make predictions?",
+      a:"Splits data into groups based on rules. Each <b>leaf-node</b> stores the <b>average Y</b> of observations in that group, which is the prediction for new data reaching that node." },
+    { id:25, topic:"L4", topicLabel:"Regression", color:"green",
+      q:"What is Random Forest and how does it differ from a single tree?",
+      a:"Combines predictions from <b>many decision trees</b>, each built on a random subset of variables.<br>More accurate but slower than a single tree." },
+    { id:26, topic:"L4", topicLabel:"Regression", color:"green",
+      q:"What is MSE and RMSE? Which is better?",
+      a:"<b>MSE</b> = mean((Y - Ŷ)²) — penalizes large errors<br><b>RMSE</b> = sqrt(MSE) — same units as Y<br>Smaller = better model. RMSE is more interpretable." },
+    { id:27, topic:"L4", topicLabel:"Regression", color:"green",
+      q:"How do you predict new data and find the top 10 in R?",
+      a:'<code>pred &lt;- predict(model, newdata=applicants)</code><br><code>applicants$PredGPA &lt;- pred</code><br><code>top10 &lt;- arrange(applicants, desc(PredGPA))[1:10,]</code>' },
+
+    // L5 Model Selection
+    { id:28, topic:"L5", topicLabel:"Model Selection", color:"pink",
+      q:"What is Cross-Validation and why use it?",
+      a:"Split data into k folds; train on k-1 folds, validate on 1 fold, repeat k times.<br>Gives a <b>more reliable estimate</b> of model accuracy than a single train/test split." },
+    { id:29, topic:"L5", topicLabel:"Model Selection", color:"pink",
+      q:"What is the difference between Train, Validation, and Test sets?",
+      a:"<b>Train</b>: build the model<br><b>Validation</b>: tune hyperparameters / select model<br><b>Test</b>: final unbiased evaluation (used ONCE at the end)" },
+    { id:30, topic:"L5", topicLabel:"Model Selection", color:"pink",
+      q:"How do you set up 10-fold CV in caret R?",
+      a:'<code>trainCtl &lt;- trainControl(method="cv", number=10)</code><br><code>model &lt;- train(y~., data=train, trControl=trainCtl, method="rpart")</code>' },
+    { id:31, topic:"L5", topicLabel:"Model Selection", color:"pink",
+      q:"What is a hyperparameter? Give an example for decision trees.",
+      a:"A parameter set <b>before</b> training that controls model complexity.<br>For rpart: <b>cp</b> (complexity parameter) — smaller cp = deeper tree.<br>Tuned using <code>tuneGrid</code> in caret." },
+    { id:32, topic:"L5", topicLabel:"Model Selection", color:"pink",
+      q:"What does varImp() return and why is it useful?",
+      a:"Returns the <b>importance score</b> of each independent variable in the model.<br>Useful for: identifying key predictors, removing unimportant variables, understanding the model." },
+    { id:33, topic:"L5", topicLabel:"Model Selection", color:"pink",
+      q:"When should you choose a regression tree over linear regression?",
+      a:"When the relationship between X and Y is <b>non-linear</b> or involves complex interactions.<br>Linear regression is faster for big data; trees are more flexible but may overfit." },
+
+    // L6 Classification
+    { id:34, topic:"L6", topicLabel:"Classification", color:"purple",
+      q:"What is the Confusion Matrix? Define TP, FP, FN, TN.",
+      a:"Matrix comparing predicted vs actual categories.<br><b>TP</b>: correctly predicted positive<br><b>FP</b>: predicted positive, actually negative<br><b>FN</b>: predicted negative, actually positive<br><b>TN</b>: correctly predicted negative" },
+    { id:35, topic:"L6", topicLabel:"Classification", color:"purple",
+      q:"Define Sensitivity, Specificity, and Precision.",
+      a:"<b>Sensitivity</b> = TP/(TP+FN) — catch all positives (e.g., disease detection)<br><b>Specificity</b> = TN/(TN+FP) — avoid false alarms<br><b>Precision</b> = TP/(TP+FP) — when predicted positive, be right" },
+    { id:36, topic:"L6", topicLabel:"Classification", color:"purple",
+      q:"What is imbalanced data and how do you fix it in R?",
+      a:"When one class has far fewer observations (e.g., claims=6% vs no-claims=94%).<br>Fix: <b>upsample</b> the minority class:<br><code>trainControl(method=&quot;cv&quot;, number=10, sampling=&quot;up&quot;)</code>" },
+    { id:37, topic:"L6", topicLabel:"Classification", color:"purple",
+      q:"What is Logistic Regression? Write the formula.",
+      a:"Classification model where: <br>log(p/1-p) = β₀ + β₁X<br>Then: p = 1/(1+e^-(β₀+β₁X))<br>In R: <code>method=&quot;glm&quot;, family=binomial</code>" },
+    { id:38, topic:"L6", topicLabel:"Classification", color:"purple",
+      q:"What is a Decile Table? What are Gain and Lift?",
+      a:"Sort customers by predicted probability (desc), divide into 10 equal groups.<br><b>Gain</b> = CumYes/TotalYes — % of positives captured<br><b>Lift</b> = Gain/Random — how much better than random" },
+    { id:39, topic:"L6", topicLabel:"Classification", color:"purple",
+      q:"How do you get predicted probabilities in R with caret?",
+      a:'<code>pred &lt;- predict(model, newdata=test, type="prob")</code><br>Returns a dataframe with probability columns for each class (e.g., Yes, No).' },
+    { id:40, topic:"L6", topicLabel:"Classification", color:"purple",
+      q:"How is multiclass classification different from binary? How is sensitivity calculated?",
+      a:"More than 2 categories (e.g., 6 skin diseases).<br>For sensitivity: treat each class as <b>positive in turn</b>, all others as negative.<br>Use <code>method=&quot;rf&quot;</code> (random forest) for better multiclass accuracy." },
+];
+
+const colorMap = {
+    blue:   { front: "bg-blue-600",   back: "bg-blue-50",   tag: "bg-blue-100 text-blue-800",   border: "border-blue-300" },
+    teal:   { front: "bg-teal-600",   back: "bg-teal-50",   tag: "bg-teal-100 text-teal-800",   border: "border-teal-300" },
+    orange: { front: "bg-orange-500", back: "bg-orange-50", tag: "bg-orange-100 text-orange-800",border: "border-orange-300" },
+    green:  { front: "bg-green-600",  back: "bg-green-50",  tag: "bg-green-100 text-green-800",  border: "border-green-300" },
+    pink:   { front: "bg-pink-600",   back: "bg-pink-50",   tag: "bg-pink-100 text-pink-800",    border: "border-pink-300" },
+    purple: { front: "bg-purple-600", back: "bg-purple-50", tag: "bg-purple-100 text-purple-800",border: "border-purple-300" },
+};
+
+let knownSet = new Set();
+let currentFilter = "all";
+let currentCards = [...cards];
+
+function renderCards(list) {
+    const grid = document.getElementById("card-grid");
+    grid.innerHTML = "";
+    list.forEach(card => {
+        const c = colorMap[card.color];
+        const isKnown = knownSet.has(card.id);
+        const div = document.createElement("div");
+        div.className = "flip-card" + (isKnown ? " flipped" : "");
+        div.id = "card-" + card.id;
+        div.onclick = () => toggleCard(card.id);
+        div.innerHTML = `
+        <div class="flip-inner">
+            <div class="flip-front ${c.front} text-white">
+                <span class="tag ${c.tag} mb-3">${card.topicLabel}</span>
+                <p class="text-base font-semibold leading-snug">${card.q}</p>
+                <p class="text-xs opacity-70 mt-3">Click to reveal answer</p>
+            </div>
+            <div class="flip-back ${c.back} border-2 ${c.border}">
+                <span class="tag ${c.tag} mb-2">${card.topicLabel}</span>
+                <p class="text-sm text-gray-800 leading-relaxed">${card.a}</p>
+                <button onclick="event.stopPropagation(); markKnown(${card.id})"
+                    class="mt-3 text-xs px-3 py-1 rounded-full ${isKnown ? "bg-green-500 text-white" : "bg-gray-200 text-gray-700"} font-semibold hover:opacity-80 transition">
+                    ${isKnown ? "✅ Mastered!" : "Mark as Known"}
+                </button>
+            </div>
+        </div>`;
+        grid.appendChild(div);
+    });
+}
+
+function toggleCard(id) {
+    document.getElementById("card-" + id).classList.toggle("flipped");
+}
+
+function markKnown(id) {
+    if (knownSet.has(id)) { knownSet.delete(id); } else { knownSet.add(id); }
+    updateStats();
+    renderCards(currentCards);
+}
+
+function updateStats() {
+    const n = knownSet.size;
+    document.getElementById("known-count").textContent = n;
+    const circumference = 150.8;
+    const offset = circumference - (n / 40) * circumference;
+    document.getElementById("ring").style.strokeDashoffset = offset;
+}
+
+function filterCards(topic) {
+    currentFilter = topic;
+    currentCards = topic === "all" ? [...cards] : cards.filter(c => c.topic === topic);
+    document.querySelectorAll(".filter-btn").forEach(b => {
+        b.classList.remove("bg-indigo-600","text-white");
+        b.classList.add("bg-gray-100","text-gray-700");
+    });
+    event.target.classList.add("bg-indigo-600","text-white");
+    event.target.classList.remove("bg-gray-100","text-gray-700");
+    renderCards(currentCards);
+}
+
+function shuffleCards() {
+    currentCards = [...currentCards].sort(() => Math.random() - 0.5);
+    renderCards(currentCards);
+}
+
+function resetAll() {
+    knownSet.clear();
+    updateStats();
+    document.querySelectorAll(".flip-card").forEach(c => c.classList.remove("flipped"));
+    renderCards(currentCards);
+}
+
+renderCards(currentCards);
+</script>
+</body>
+</html>
