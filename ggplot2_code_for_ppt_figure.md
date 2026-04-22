@@ -1,16 +1,10 @@
-# Appendix C – ggplot2 Code for Figures
+# Appendix C – Figures (ggplot2 Code, Titles, and Captions
 
-This appendix contains ggplot2 code for the main plots used in the report and presentation:
-- Price distribution
-- Room type and Superhost composition
-- Price vs room type
-- Variable importance (price and Superhost models)
-- K-means elbow and cluster scatter
-- Instant Book vs high occupancy
+This appendix contains ggplot2 code and the corresponding figure titles and captions used in the report and presentation.
 
-Assumes:
+Assumptions:
 - `df_clean` is prepared as in Appendix A.
-- Models `fit_rpart`, `fit_logit` are fitted as in Appendix B.
+- Models `fit_rpart` (price tree) and `fit_logit` (Superhost logistic) are fitted as in Appendix B.
 
 ```r
 library(ggplot2)
@@ -22,7 +16,15 @@ library(scales)
 
 ---
 
-## C.1 Price Distribution – Histogram
+## Figure 1 – Price Distribution
+
+**Figure title**  
+Figure 1. Distribution of Airbnb listing prices in Hong Kong.
+
+**Caption**  
+This figure shows the distribution of cleaned listing prices in Hong Kong on the Inside Airbnb dataset, highlighting the overall price range and skewness of the market. It motivates the use of regression techniques to model price and potentially transform the variable when building predictive models.
+
+**Code**
 
 ```r
 ggplot(df_clean, aes(x = price_clean)) +
@@ -51,7 +53,15 @@ ggplot(df_clean, aes(x = price_clean)) +
 
 ---
 
-## C.2 Room Type Composition – Bar Chart
+## Figure 2 – Room Type Composition
+
+**Figure title**  
+Figure 2. Distribution of room types among Hong Kong listings.
+
+**Caption**  
+This figure displays the counts of different room types (e.g. entire home/apt, private room) in the Hong Kong Airbnb dataset. It illustrates that entire homes and private rooms dominate the market, justifying the inclusion of room_type as a key predictor of price.
+
+**Code**
 
 ```r
 ggplot(df_clean, aes(x = room_type)) +
@@ -66,7 +76,15 @@ ggplot(df_clean, aes(x = room_type)) +
 
 ---
 
-## C.3 Superhost Proportion – Bar Chart
+## Figure 3 – Superhost Proportion
+
+**Figure title**  
+Figure 3. Proportion of Superhost vs non-Superhost listings.
+
+**Caption**  
+This figure visualizes the number of listings belonging to Superhosts compared with non-Superhosts in the dataset. The clear minority share of Superhosts supports the need for up-sampling techniques when training the Superhost classification model.
+
+**Code**
 
 ```r
 ggplot(df_clean, aes(x = host_is_superhost)) +
@@ -81,7 +99,15 @@ ggplot(df_clean, aes(x = host_is_superhost)) +
 
 ---
 
-## C.4 Price by Room Type – Boxplot
+## Figure 4 – Price by Room Type
+
+**Figure title**  
+Figure 4. Listing prices by room type.
+
+**Caption**  
+This figure compares the distribution of prices across room types, showing that entire homes and apartments tend to command higher prices than private rooms. The observed differences provide early evidence that room_type is an important driver of price and should be included in the regression model.
+
+**Code**
 
 ```r
 ggplot(df_clean, aes(x = room_type, y = price_clean)) +
@@ -95,13 +121,17 @@ ggplot(df_clean, aes(x = room_type, y = price_clean)) +
   theme_minimal()
 ```
 
-The `coord_cartesian` call trims extreme prices (top 5%) so boxes are clearer.
-
 ---
 
-## C.5 Variable Importance – Price Regression (Tree Model)
+## Figure 5 – Variable Importance for Price Model
 
-Assumes you fitted a decision tree regression `fit_rpart` with caret.
+**Figure title**  
+Figure 5. Variable importance in the price regression tree model.
+
+**Caption**  
+This figure presents the relative importance of predictors such as accommodates, room_type, and neighbourhood_cleansed in the decision tree regression model for price. It indicates which listing characteristics contribute most to explaining price differences across properties.
+
+**Code**
 
 ```r
 imp_price <- varImp(fit_rpart)$importance %>%
@@ -121,9 +151,15 @@ ggplot(imp_price, aes(x = reorder(variable, Overall), y = Overall)) +
 
 ---
 
-## C.6 Variable Importance – Superhost Classification
+## Figure 6 – Variable Importance for Superhost Model
 
-Assumes you fitted a logistic regression `fit_logit` with caret.
+**Figure title**  
+Figure 6. Variable importance in the Superhost classification model.
+
+**Caption**  
+This figure shows the most influential variables for predicting Superhost status, including host_response_rate, host_acceptance_rate, review_scores_rating, and number_of_reviews. The results highlight the key host behaviors and listing attributes associated with achieving Superhost recognition.
+
+**Code**
 
 ```r
 imp_superhost <- varImp(fit_logit)$importance %>%
@@ -143,9 +179,15 @@ ggplot(imp_superhost, aes(x = reorder(variable, Overall), y = Overall)) +
 
 ---
 
-## C.7 Elbow Plot – K-means Clustering
+## Figure 7 – Elbow Plot for K-means
 
-Assumes you computed `wss` for k = 2:6.
+**Figure title**  
+Figure 7. Elbow plot for selecting the number of clusters.
+
+**Caption**  
+This figure plots the total within-cluster sum of squares against the number of clusters k for the K-means algorithm applied to price, availability_365, and number_of_reviews_l30d. The “elbow” point guides the choice of an appropriate number of clusters that balances model simplicity and segment separation.
+
+**Code**
 
 ```r
 k_values <- 2:6
@@ -167,9 +209,15 @@ ggplot(elbow_df, aes(x = k, y = wss)) +
 
 ---
 
-## C.8 Cluster Scatter Plot – Price vs Recent Reviews
+## Figure 8 – Cluster Scatter Plot
 
-Assumes you created `df_clust_res` with `cluster` as a factor.
+**Figure title**  
+Figure 8. Clusters of listings by price and recent review activity.
+
+**Caption**  
+This figure plots listings by price and number_of_reviews_l30d, colored by their assigned K-means cluster. It illustrates distinct segments such as budget high-demand listings and premium lower-demand listings that can be targeted with different marketing strategies.
+
+**Code**
 
 ```r
 ggplot(df_clust_res,
@@ -186,11 +234,17 @@ ggplot(df_clust_res,
   theme_minimal()
 ```
 
-You can instead put `availability_365` on the y-axis if that tells a clearer story.
-
 ---
 
-## C.9 Instant Book vs High Occupancy – Bar Chart
+## Figure 9 – Instant Book vs High Occupancy
+
+**Figure title**  
+Figure 9. Share of high-occupancy listings by Instant Bookable status.
+
+**Caption**  
+This figure compares the proportion of high-occupancy listings between Instant Bookable and non-Instant Bookable properties, based on the derived high_occupancy variable from availability_365. The observed differences support the investigation of Instant Bookable as an important factor in the occupancy classification model.
+
+**Code**
 
 ```r
 ib_summary <- df_clean %>%
