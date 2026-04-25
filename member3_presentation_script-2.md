@@ -103,7 +103,7 @@ Specificity : 0.85515
 ## Slide 5 — Variable Importance
 **⏱ ~35 seconds**
 
-> "`varImp(model)` shows review score rating is the #1 predictor at 100, followed by number of reviews at 90.77. Most strikingly, **Instant Bookable has zero importance — 0.00**. This means enabling Instant Bookable has no effect on Superhost status at all. These are independent strategies — which is exactly what Member 5 will explore next."
+> "`varImp(model)` shows review score rating is the #1 predictor at 100, followed by number of reviews at 90.77. Most strikingly, **Instant Bookable has zero importance — 0.00**. This means enabling Instant Bookable has no effect on Superhost status at all. These are independent strategies — which is exactly what Jennie will explore later."
 
 ### Code
 ```r
@@ -124,7 +124,7 @@ instant_bookableYes     0.00   ← ZERO — independent of Superhost
 ## Slide 6 — Business Impact
 **⏱ ~30 seconds**
 
-> "Putting it all together: a Superhost earns HK$129,404 per year versus HK$37,391 for a regular host — a HK$92,013 annual uplift. Our model tells you exactly how to get there: maintain a high review score, collect more reviews, and price competitively using Member 2's model."
+> "Putting it all together: a Superhost earns HK$129,404 per year versus HK$37,391 for a regular host — a HK$92,013 annual uplift. Our model tells you exactly how to get there: maintain a high review score, collect more reviews, and price competitively using Sun's model."
 
 ---
 
