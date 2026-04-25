@@ -9,7 +9,7 @@
 ## Slide 1 — Title Slide
 **⏱ ~20 seconds**
 
-> "My section is Question 2 — the classification problem. I built a model to predict whether a host will become a Superhost, and identified the key factors that drive that status. Superhosts earn over HK$92,000 more per year — so this question has real financial impact."
+> "My section is Question 2 — the classification problem. The business question is: can we predict whether a host will become a Superhost, and more importantly, what are the key factors that drive that status? Superhosts earn over HK$92,000 more per year — so this question has real financial impact."
 
 ---
 
